@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:f9_recursos_nativos/models/place.dart';
-import 'package:f9_recursos_nativos/utils/db_util.dart';
+import 'package:mini_projeto_5/models/place.dart';
+import 'package:mini_projeto_5/utils/db_util.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

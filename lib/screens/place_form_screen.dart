@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:f9_recursos_nativos/components/image_input.dart';
-import 'package:f9_recursos_nativos/components/location_input.dart';
-import 'package:f9_recursos_nativos/provider/great_places.dart';
+import 'package:mini_projeto_5/components/image_input.dart';
+import 'package:mini_projeto_5/components/location_input.dart';
+import 'package:mini_projeto_5/provider/great_places.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

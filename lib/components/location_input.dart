@@ -1,6 +1,6 @@
-import 'package:f9_recursos_nativos/models/place.dart';
-import 'package:f9_recursos_nativos/screens/map_screen.dart';
-import 'package:f9_recursos_nativos/utils/location_util.dart';
+import 'package:mini_projeto_5/models/place.dart';
+import 'package:mini_projeto_5/screens/map_screen.dart';
+import 'package:mini_projeto_5/utils/location_util.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

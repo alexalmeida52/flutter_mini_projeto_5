@@ -1,7 +1,8 @@
-import 'package:f9_recursos_nativos/provider/great_places.dart';
-import 'package:f9_recursos_nativos/screens/place_form_screen.dart';
-import 'package:f9_recursos_nativos/screens/places_list_screen.dart';
-import 'package:f9_recursos_nativos/utils/app_routes.dart';
+import 'package:mini_projeto_5/provider/great_places.dart';
+import 'package:mini_projeto_5/screens/place_detail_screen.dart';
+import 'package:mini_projeto_5/screens/place_form_screen.dart';
+import 'package:mini_projeto_5/screens/places_list_screen.dart';
+import 'package:mini_projeto_5/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         home: PlacesListScreen(),
         routes: {
           AppRoutes.PLACE_FORM: (ctx) => PlaceFormScreen(),
+          AppRoutes.PLACE_DETAIL: (ctx) => PlaceDetailScreen(),
         },
       ),
     );

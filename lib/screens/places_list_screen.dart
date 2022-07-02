@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:f9_recursos_nativos/provider/great_places.dart';
-import 'package:f9_recursos_nativos/utils/app_routes.dart';
+import 'package:mini_projeto_5/provider/great_places.dart';
+import 'package:mini_projeto_5/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +47,9 @@ class PlacesListScreen extends StatelessWidget {
                                   Provider.of<GreatPlaces>(context, listen: false).removePlaceById(greatPlaces.itemByIndex(index).id);
                                 },
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).pushNamed(AppRoutes.PLACE_DETAIL, arguments: greatPlaces.itemByIndex(index));
+                              },
                             ),
                           ),
               ),

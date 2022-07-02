@@ -1,4 +1,4 @@
-import 'package:f9_recursos_nativos/models/place.dart';
+import 'package:mini_projeto_5/models/place.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

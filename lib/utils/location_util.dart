@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:f9_recursos_nativos/models/place.dart';
+import 'package:mini_projeto_5/models/place.dart';
 import 'package:http/http.dart' as http;
 
 const GOOGLE_API_KEY = 'AIzaSyC_g-I-mmIwEoXukxrY9hF4ku0tIefsgHE';
