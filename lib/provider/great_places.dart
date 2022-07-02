@@ -132,4 +132,18 @@ class GreatPlaces with ChangeNotifier {
       await loadPlaces();
     }
   }
+
+  void removePlaceById(String id) async {
+    final response =
+        await http.delete(Uri.parse('$_baseUrl/places/$id.json'));
+    if (response.statusCode == 200) {
+      int index = _items.indexWhere((p) => p.id == id);
+
+      if (index >= 0) {
+        _items.removeAt(index);
+        await DbUtil.deleteById(id);
+        notifyListeners();
+      }
+    }
+  }
 }
