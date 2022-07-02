@@ -16,6 +16,7 @@ class LocationInput extends StatefulWidget {
 
 class _LocationInputState extends State<LocationInput> {
   String? _previewImageUrl;
+  final _locationController = TextEditingController();
 
   Future<void> _getCurrentUserLocation() async {
     final locData =
@@ -107,8 +108,87 @@ class _LocationInputState extends State<LocationInput> {
               onPressed: _selectOnMap,
             ),
           ],
+        ),
+        Column(
+          children: [
+            TextButton.icon(
+              icon: Icon(Icons.edit),
+              label: Text('Digite o endereço'),
+              onPressed: () async {
+                await showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            color: Colors.indigo,
+                            width: double.infinity,
+                            child: const Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Informe o endereço',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: _locationController,
+                              textCapitalization: TextCapitalization.words,
+                              decoration: const InputDecoration(
+                                  labelText: 'Endereço',
+                                  helperText:
+                                      'Ex.: Rua José Roque da Silva, 176, Poço Branco, RN'),
+                            ),
+                          ),
+                          ElevatedButton.icon(
+                              icon: Icon(Icons.add),
+                              label: Text('Adicionar'),
+                              style: ElevatedButton.styleFrom(
+                                primary:
+                                    Theme.of(context).colorScheme.secondary,
+                                onPrimary: Colors.black,
+                                elevation: 5,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              onPressed: () async {
+                                final String address = _locationController.text;
+
+                                PlaceLocation placeLocation =
+                                    await LocationUtil.getLocal(address);
+
+                                String address_url = await LocationUtil.generateLocationPreviewImage(latitude: placeLocation.latitude, longitude: placeLocation.longitude);
+
+                                 setState(() {
+                                  _previewImageUrl = address_url;
+                                });
+
+                                widget.onSubmit(placeLocation);
+                                Navigator.pop(context);
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                    'Local adicionado',
+                                    textAlign: TextAlign.center,
+                                  )),
+                                );
+                              })
+                        ],
+                      );
+                    });
+              },
+            ),
+          ],
         )
       ],
     );
   }
+
 }

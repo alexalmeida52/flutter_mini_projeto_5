@@ -24,6 +24,19 @@ class LocationUtil {
     print(result);
     return result;
   }
+
+  static Future<PlaceLocation> getLocal(String address) async {
+    final response = await http.get(Uri.parse('https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=AIzaSyC_g-I-mmIwEoXukxrY9hF4ku0tIefsgHE'));
+
+    final map = jsonDecode(response.body).cast<String, dynamic>();
+    
+    return PlaceLocation(
+      latitude: map['results'][0]['geometry']['location']['lat'], 
+      longitude: map['results'][0]['geometry']['location']['lng'],
+      address: map['results'][0]['formatted_address']
+    );
+  }
+
 }
 // https://maps.googleapis.com/maps/api/geocode/json?latlng=-5.6192591,-35.6677319&key=AIzaSyC_g-I-mmIwEoXukxrY9hF4ku0tIefsgHE
 // https://maps.googleapis.com/maps/api/geocode/json?address=176+rua+jose+roque+da+silva&key=AIzaSyC_g-I-mmIwEoXukxrY9hF4ku0tIefsgHE
