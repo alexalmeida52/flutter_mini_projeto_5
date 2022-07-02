@@ -54,7 +54,7 @@ class GreatPlaces with ChangeNotifier {
           "phone": phone
         }));
 
-    return future.then((response) {
+    return future.then((response) async {
       //print('espera a requisição acontecer');
       print(jsonDecode(response.body));
       final id = jsonDecode(response.body)['name'];
@@ -77,30 +77,59 @@ class GreatPlaces with ChangeNotifier {
         'address': newPlace.location!.address,
         'phone': newPlace.phone
       });
+
+      final dataList = await DbUtil.selectOldestRecord();
+      List<Map<String, dynamic>> result = dataList
+          .map((item) => {"id": item['id'], "amount": item['amount']})
+          .toList();
+
+      if (result != null && !result.isEmpty) {
+        int count = result[0]['amount'];
+        print(count);
+        String oldestId = result[0]['id'];
+        if (count > 5) {
+          print('Remover $oldestId');
+          DbUtil.deleteById(oldestId);
+        } else {
+          print('Ainda não existe 5 registros');
+        }
+      }
       notifyListeners();
     });
   }
 
   Future<void> fetchPlaces() async {
-    final response = await http.get(Uri.parse('$_baseUrl/places.json'));
+    print('iniciando o fetch');
+    final response = await http
+        .get(Uri.parse('$_baseUrl/places.json'))
+        .timeout(const Duration(seconds: 2), onTimeout: () {
+      // Time has run out, do what you wanted to do.
+      return http.Response(
+          'Error', 408); // Request Timeout response status code
+    });
+    print(response);
     if (response.statusCode == 200) {
+      print('statusCode ${response.statusCode}');
       List<Place> list = [];
       final map = jsonDecode(response.body);
-
+      // print(map);
       map.forEach((k, v) {
         list.add(Place(
           id: k,
           title: v['title'],
-          image: v['image'],
+          image: File(v['image']),
           phone: v['phone'],
-          location: PlaceLocation(latitude: v['lat'], longitude: v['long'], address: v['address']),
+          location: PlaceLocation(
+              latitude: v['lat'], longitude: v['long'], address: v['address']),
         ));
       });
+      print('Lista populada');
       _items = list;
+      print(_items.length);
       notifyListeners();
     } else {
-      throw Exception('Failed to load albums');
+      print('error');
+      await loadPlaces();
     }
   }
-
 }

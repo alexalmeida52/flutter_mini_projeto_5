@@ -9,8 +9,16 @@ class DbUtil {
       path.join(dbPath, 'places.db'),
       onCreate: (db, version) {
         //executa o ddl para cirar o banco
-        return db.execute(
-            'CREATE TABLE places (id TEXT PRIMARY KEY, title TEXT, image TEXT, lat REAL, long REAL, address TEXT, phone TEXT)');
+        return db.execute('''CREATE TABLE places (
+                id TEXT PRIMARY KEY, 
+                title TEXT, 
+                image TEXT, 
+                lat REAL, 
+                long REAL, 
+                address TEXT, 
+                phone TEXT,
+                create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+              )''');
       },
       version: 1,
     );
@@ -26,8 +34,20 @@ class DbUtil {
     );
   }
 
+  static Future<List<Map<String, dynamic>>> selectOldestRecord() async {
+    final db = await DbUtil.database();
+    return db
+        .rawQuery('SELECT min(create_at), count(1) amount, id FROM places;');
+  }
+
   static Future<List<Map<String, dynamic>>> getData(String table) async {
     final db = await DbUtil.database();
     return db.query(table);
+  }
+
+  static Future<void> deleteById(String oldestId) async {
+    final db = await DbUtil.database();
+    print('DELETE from places WHERE id = $oldestId;');
+    db.rawQuery("DELETE from places WHERE id = '$oldestId';");
   }
 }
