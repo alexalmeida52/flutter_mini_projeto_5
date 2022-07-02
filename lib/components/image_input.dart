@@ -17,6 +17,7 @@ class ImageInput extends StatefulWidget {
 class _ImageInputState extends State<ImageInput> {
   //Capturando Imagem
   File? _storedImage;
+  File? _image;
 
   _takePicture() async {
     final ImagePicker _picker = ImagePicker();
@@ -29,6 +30,7 @@ class _ImageInputState extends State<ImageInput> {
 
     setState(() {
       _storedImage = File(imageFile.path);
+      _image = null;
     });
 
     //pegar pasta que posso salvar documentos
@@ -38,6 +40,21 @@ class _ImageInputState extends State<ImageInput> {
       '${appDir.path}/$fileName',
     );
     widget.onSelectImage(savedImage);
+  }
+
+  _getImage() async {
+    final ImagePicker _picker = ImagePicker();
+    XFile imageFile =
+        await _picker.pickImage(source: ImageSource.gallery) as XFile;
+
+    if (imageFile == null) return;
+
+    setState(() {
+      _image = File(imageFile.path);
+      _storedImage = null;
+    });
+
+    widget.onSelectImage(_image);
   }
 
   @override
@@ -53,9 +70,9 @@ class _ImageInputState extends State<ImageInput> {
           alignment: Alignment.center,
           //child: Text('Nenhuma imagem!'),
           //verificar se tem imagem
-          child: _storedImage != null
+          child: _storedImage != null || _image != null
               ? Image.file(
-                  _storedImage!,
+                  _storedImage ?? _image!,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 )
@@ -63,10 +80,19 @@ class _ImageInputState extends State<ImageInput> {
         ),
         SizedBox(width: 10),
         Expanded(
-          child: TextButton.icon(
-            icon: Icon(Icons.camera),
-            label: Text('Tirar foto'),
-            onPressed: _takePicture,
+          child: Column(
+            children: [
+              TextButton.icon(
+                icon: Icon(Icons.camera),
+                label: Text('Tirar foto'),
+                onPressed: _takePicture,
+              ),
+              TextButton.icon(
+                icon: Icon(Icons.add_a_photo),
+                label: Text('Anexar foto'),
+                onPressed: _getImage,
+              ),
+            ],
           ),
         ),
       ],

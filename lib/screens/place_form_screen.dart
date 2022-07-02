@@ -22,20 +22,25 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
   File? _pickedImage;
 
   void _selectImage(File? pickedImage) {
+    print('Setando imagem');
     _pickedImage = pickedImage;
   }
 
   //
 
   void _submitForm() {
-    if (_titleController.text.isEmpty || _phoneController.text.isEmpty || _pickedImage == null) {
+    if (_titleController.text.isEmpty ||
+        _phoneController.text.isEmpty ||
+        _pickedImage == null) {
       return;
     }
-    
+
     Provider.of<GreatPlaces>(context, listen: false)
-        .addPlace(_titleController.text, _pickedImage!, placeLocation, _phoneController.text).then((value) {
-          Navigator.of(context).pop();
-        });
+        .addPlace(_titleController.text, _pickedImage!, placeLocation,
+            _phoneController.text)
+        .then((value) {
+      Navigator.of(context).pop();
+    });
   }
 
   void setPlaceLocation(PlaceLocation local) {
@@ -67,9 +72,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                     TextField(
                       controller: _phoneController,
                       decoration: InputDecoration(
-                        labelText: 'Telefone',
-                        hintText: 'ex.: 84988649373'
-                      ),
+                          labelText: 'Telefone', hintText: 'ex.: 84988649373'),
                     ),
                     SizedBox(height: 10),
                     ImageInput(this._selectImage),
